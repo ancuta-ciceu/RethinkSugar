@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "623130587666",
+    "project_id": "rethinksugar-b402c",
+    "storage_bucket": "rethinksugar-b402c.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:623130587666:android:5b1151579b317896a85ecb",
+        "android_client_info": {
+          "package_name": "com.example.rethinksugar"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCn4N8VzfbhldHNBgdgPKPwxTKQN_nI2Nw"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
