@@ -1,4 +1,4 @@
-package com.example.rethinksugar
+package com.example.rethinksugar.auth
 
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity

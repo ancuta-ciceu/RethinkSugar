@@ -5,8 +5,13 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:padding="16dp"
-    android:background="@color/pink"
-    tools:context=".SignUpActivity">
+    tools:context=".auth.SignUpActivity">
+
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:src="@drawable/cottoncandy"
+        android:scaleType="centerCrop"/>
 
 
     <TextView
@@ -88,7 +93,7 @@
         android:layout_marginStart="16dp"
         android:layout_marginTop="100dp"
         android:layout_marginEnd="16dp"
-        android:backgroundTint="@color/button"
+        android:background="@drawable/fade_button"
         android:text="Sign Up"
         android:textColor="@color/black"
         app:layout_constraintEnd_toEndOf="parent"
