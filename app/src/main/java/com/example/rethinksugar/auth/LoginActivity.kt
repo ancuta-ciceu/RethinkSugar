@@ -1,9 +1,10 @@
-package com.example.rethinksugar
+package com.example.rethinksugar.auth
 
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Toast
+import com.example.rethinksugar.WelcomeActivity
 import com.example.rethinksugar.databinding.ActivityLogin2Binding
 import com.google.firebase.auth.FirebaseAuth
 
