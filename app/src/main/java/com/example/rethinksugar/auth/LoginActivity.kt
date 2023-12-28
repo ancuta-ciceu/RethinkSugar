@@ -4,7 +4,7 @@ import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Toast
-import com.example.rethinksugar.WelcomeActivity
+import com.example.rethinksugar.HomeActivity
 import com.example.rethinksugar.databinding.ActivityLogin2Binding
 import com.google.firebase.auth.FirebaseAuth
 
@@ -29,16 +29,16 @@ class LoginActivity : AppCompatActivity(){
             val password = binding.loginPassword.text.toString()
 
             if(email.isNotEmpty() && password.isNotEmpty()){
-                    firebaseAuth.signInWithEmailAndPassword(email,password).addOnCompleteListener {
-                        if(it.isSuccessful){
-                            val intent = Intent(this, WelcomeActivity::class.java)
-                            startActivity(intent)
-                        }
-                        else{
-                            Toast.makeText(this,it.exception.toString(), Toast.LENGTH_SHORT).show()
-
-                        }
+                firebaseAuth.signInWithEmailAndPassword(email,password).addOnCompleteListener {
+                    if(it.isSuccessful){
+                        val intent = Intent(this, HomeActivity::class.java)
+                        startActivity(intent)
                     }
+                    else{
+                        Toast.makeText(this,it.exception.toString(), Toast.LENGTH_SHORT).show()
+
+                    }
+                }
             }
             else{
                 Toast.makeText(this,"All fields must be completed", Toast.LENGTH_SHORT).show()
@@ -46,15 +46,15 @@ class LoginActivity : AppCompatActivity(){
             }
         }
     }
-/*
-//pentru cand deja exista un utilizator pe acest dispozitiv conectat
-    override fun onStart() {
-        super.onStart()
 
-        if(firebaseAuth.currentUser !== null){
-            val intent = Intent(this, WelcomeActivity::class.java)
-            startActivity(intent)
+    //pentru cand deja exista un utilizator pe acest dispozitiv conectat
+        override fun onStart() {
+            super.onStart()
+
+            if(firebaseAuth.currentUser !== null){
+                val intent = Intent(this, HomeActivity::class.java)
+                startActivity(intent)
+            }
         }
-    }
-    */
+
 }

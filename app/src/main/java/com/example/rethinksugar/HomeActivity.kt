@@ -2,10 +2,13 @@ package com.example.rethinksugar
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import com.example.rethinksugar.databinding.ActivityHomeBinding
 
-class MainActivity : AppCompatActivity() {
+class HomeActivity : AppCompatActivity() {
+    private lateinit var binding:ActivityHomeBinding
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
+        setContentView(R.layout.activity_home)
+
     }
 }
