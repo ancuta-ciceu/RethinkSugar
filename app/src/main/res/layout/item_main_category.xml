@@ -5,7 +5,7 @@
     <data>
         <variable
             name="recipe"
-            type="com.example.rethinksugar.database.RecipesEntity" />
+            type="com.example.rethinksugar.domain.Recipes" />
     </data>
 <RelativeLayout
     android:layout_width="wrap_content"

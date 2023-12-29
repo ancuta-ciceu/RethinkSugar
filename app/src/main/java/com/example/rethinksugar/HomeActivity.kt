@@ -9,6 +9,8 @@ import com.example.rethinksugar.adapter.MainCategoryAdapter
 import com.example.rethinksugar.adapter.SubCategoryAdapter
 import com.example.rethinksugar.databinding.ActivityHomeBinding
 
+
+
 class HomeActivity : AppCompatActivity() {
     private lateinit var binding: ActivityHomeBinding
     private val viewModel: HomeViewModel by viewModels()
@@ -19,7 +21,6 @@ class HomeActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = DataBindingUtil.setContentView(this, R.layout.activity_home)
         binding.lifecycleOwner = this
-        binding.viewModel = viewModel
 
         with(binding.mainCategories) {
             layoutManager = LinearLayoutManager(this@HomeActivity, LinearLayoutManager.HORIZONTAL, false)

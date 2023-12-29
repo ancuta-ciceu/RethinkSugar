@@ -4,9 +4,9 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.rethinksugar.firebase.FirebaseStore
 import com.example.rethinksugar.domain.Recipes
-import kotlinx.coroutines.flow.collect
+import com.example.rethinksugar.firebase.FirebaseStore
+import kotlinx.coroutines.isActive
 import kotlinx.coroutines.launch
 
 class HomeViewModel : ViewModel() {
@@ -21,8 +21,10 @@ class HomeViewModel : ViewModel() {
     fun fetchData() {
         viewModelScope.launch {
             firebaseStore.getAll().collect { recipesList ->
-                val mainCategories = recipesList.filter { /* filter main categories condition */ }
-                val subCategories = recipesList.filter { /* filter sub categories condition */ }
+                val mainCategories = recipesList.filter {
+                isActive/* filter main categories condition */ }
+                val subCategories = recipesList.filter {
+                isActive/* filter sub categories condition */ }
 
                 _mainCategories.value = mainCategories
                 _subCategories.value = subCategories
