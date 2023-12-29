@@ -1,7 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:tools="http://schemas.android.com/tools">
+    <data>
+        <variable
+            name="viewModel"
+            type="com.example.rethinksugar.HomeActivity" />
+    </data>
+<RelativeLayout
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
@@ -74,14 +81,13 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="10dp"
-
                 android:orientation="horizontal"
                 tools:itemCount="3"
-                tools:listitem="@layout/item_sub_category">
-            </androidx.recyclerview.widget.RecyclerView>
+                tools:listitem="@layout/item_sub_category"/>
 
 
         </LinearLayout>
     </ScrollView>
 
 </RelativeLayout>
+</layout>

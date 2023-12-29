@@ -1,7 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:tools="http://schemas.android.com/tools">
+    <data>
+        <variable
+            name="recipe"
+            type="com.example.rethinksugar.database.RecipesEntity" />
+    </data>
+
+<LinearLayout
     android:orientation="vertical"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content">
@@ -28,7 +35,7 @@
 
 
         <TextView
-            android:id="@+id/dish"
+            android:id="@+id/dessert"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Dessert name"
@@ -40,3 +47,4 @@
     </LinearLayout>
 
 </LinearLayout>
+</layout>
