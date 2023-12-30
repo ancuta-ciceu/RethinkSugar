@@ -42,7 +42,7 @@ class SubCategoryAdapter : RecyclerView.Adapter<SubCategoryAdapter.RecipeViewHol
     override fun onBindViewHolder(holder: RecipeViewHolder, position: Int) {
         val recipeData = differ.currentList[position]
         holder.binding.apply {
-            Glide.with(holder.itemView).load(recipeData.recipe).into(imgDessert)
+            Glide.with(holder.itemView).load(recipeData.imageUrl).into(imgDessert)
             dessert.text = recipeData.name
         }
     }

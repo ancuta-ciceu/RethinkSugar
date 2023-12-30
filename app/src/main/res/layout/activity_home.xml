@@ -36,26 +36,16 @@
                 tools:ignore="MissingConstraints" />
 
 
-            <androidx.cardview.widget.CardView
+            <TextView
+                android:id="@+id/recepies_categories"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                android:layout_marginStart="10dp"
-                android:layout_marginEnd="10dp"
-                app:cardCornerRadius="10dp"
-                app:cardElevation="10dp"
-                tools:ignore="MissingConstraints"
-                >
-
-                <SearchView
-                    android:id="@+id/search_bar"
-                    android:layout_width="match_parent"
-                    android:theme="@style/ThemeOverlay.Material3.Search"
-                    android:queryHint="Search"
-                    android:background="@drawable/search_bg"
-                    android:iconifiedByDefault="false"
-                    android:layout_height="wrap_content"/>
-            </androidx.cardview.widget.CardView>
+                android:text="Categories"
+                android:textSize="25sp"
+                android:textColor="@color/black"
+                android:textStyle="italic|bold"
+                android:paddingStart="10dp"
+                tools:ignore="MissingConstraints" />
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/main_categories"
@@ -66,10 +56,10 @@
                 tools:itemCount="1"
                 tools:listitem="@layout/item_main_category"/>
             <TextView
-                android:id="@+id/recepies_categories"
+                android:id="@+id/recepies_recommendations"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Categories"
+                android:text="Recommendations"
                 android:textSize="25sp"
                 android:textColor="@color/black"
                 android:textStyle="italic|bold"
