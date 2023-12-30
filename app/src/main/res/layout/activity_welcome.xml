@@ -4,8 +4,9 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/pink"
-    tools:context=".WelcomeActivity">
+    android:background="@drawable/cotton"
+    tools:context=".auth.WelcomeActivity">
+
 
     <TextView
         android:layout_width="425dp"
@@ -28,7 +29,7 @@
         android:layout_marginStart="100dp"
         android:layout_marginTop="56dp"
         android:layout_marginEnd="30dp"
-        android:backgroundTint="@color/button"
+        android:background="@drawable/bg_button"
         android:textColor="@color/black"
         android:text="Let's begin"
         app:layout_constraintEnd_toEndOf="parent"

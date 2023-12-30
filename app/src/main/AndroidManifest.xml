@@ -13,14 +13,8 @@
         android:theme="@style/Theme.RethinkSugar"
         tools:targetApi="31">
         <activity
-            android:name=".WelcomeActivity"
-            android:exported="false" />
-        <activity
-            android:name=".auth.SignUpActivity"
-            android:exported="false" />
-        <activity
-            android:name=".auth.LoginActivity"
-            android:exported="true">
+            android:name=".auth.SplashActivity"
+            android:exported="true" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -28,7 +22,17 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".MainActivity"
+            android:name=".auth.WelcomeActivity"
+            android:exported="false" />
+        <activity
+            android:name=".auth.SignUpActivity"
+            android:exported="false" />
+        <activity
+            android:name=".auth.LoginActivity"
+            android:exported="false"/>
+
+        <activity
+            android:name=".HomeActivity"
             android:exported="false" />
     </application>
 
