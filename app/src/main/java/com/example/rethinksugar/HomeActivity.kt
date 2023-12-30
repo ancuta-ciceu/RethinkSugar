@@ -1,60 +1,80 @@
 package com.example.rethinksugar
 
 import android.os.Bundle
-import android.util.Log
-import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
-import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.rethinksugar.adapter.MainCategoryAdapter
 import com.example.rethinksugar.adapter.SubCategoryAdapter
 import com.example.rethinksugar.databinding.ActivityHomeBinding
-import com.example.rethinksugar.domain.Recipes
+import com.example.rethinksugar.firebase.Recipes
 import com.example.rethinksugar.firebase.RecipesCategory
+import com.google.firebase.database.DataSnapshot
+import com.google.firebase.database.DatabaseError
+import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.database.ValueEventListener
 
-
-class HomeActivity : AppCompatActivity() {
+class HomeActivity : AppCompatActivity() { // Change the superclass to FragmentActivity
     private lateinit var binding: ActivityHomeBinding
-    private val viewModel: HomeViewModel by viewModels()
-    private val mainCategoryAdapter = MainCategoryAdapter()
-    private val subCategoryAdapter = SubCategoryAdapter()
+    private lateinit var mainAdapter: MainCategoryAdapter
+    private lateinit var subAdapter: SubCategoryAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding = DataBindingUtil.setContentView(this, R.layout.activity_home)
-        binding.lifecycleOwner = this
+        binding = ActivityHomeBinding.inflate(layoutInflater)
+        setContentView(binding.root)
 
-        with(binding.mainCategories) {
-            layoutManager = LinearLayoutManager(this@HomeActivity, LinearLayoutManager.HORIZONTAL, false)
-            adapter = mainCategoryAdapter
-        }
+        mainAdapter = MainCategoryAdapter()
+        binding.mainCategories.layoutManager =
+            LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
+        binding.mainCategories.adapter = mainAdapter
 
-        with(binding.subcategories) {
-            layoutManager = LinearLayoutManager(this@HomeActivity, LinearLayoutManager.HORIZONTAL, false)
-            adapter = subCategoryAdapter
-        }
+        subAdapter = SubCategoryAdapter()
+        binding.subCategories.layoutManager =
+            LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
+        binding.subCategories.adapter = subAdapter
 
-        viewModel.fetchData()
-        viewModel.mainCategories.observe(this, { mainCategories ->
-            Log.d("HomeActivity", "Main Categories: $mainCategories")
-        })
-        viewModel.subCategories.observe(this, { subCategories ->
-            Log.d("HomeActivity", "Sub Categories: $subCategories")
-        })
+        showAllCategories()
+    }
 
-        val mainCategory = listOf(
-            Recipes("1", "Chocolate", "Milk Chocolate", "", "https://img.taste.com.au/-l6L5bYJ/w720-h480-cfill-q80/taste/2016/11/homemade-chocolate-cake-85524-1.jpeg", listOf(""), ""),
-            Recipes("2", "Vanilla", "Vanilla", "", "https://img.taste.com.au/-l6L5bYJ/w720-h480-cfill-q80/taste/2016/11/homemade-chocolate-cake-85524-1.jpeg", listOf(""), "")
+    private fun showAllCategories() {
+        FirebaseDatabase.getInstance().getReference("RecipesCategories")
+            .addValueEventListener(object : ValueEventListener {
+                override fun onDataChange(snapshot: DataSnapshot) {
+                    val categoryList = arrayListOf<RecipesCategory>()
+                    for (categories in snapshot.children) {
+                        val currentCategory = categories.getValue(RecipesCategory::class.java)
+                        currentCategory?.let {
+                            categoryList.add(it)
+                        }
+                    }
+                    mainAdapter.differ.submitList(categoryList)
+                    val cakesCategoryId = "Cakes"
+                    showSubCategories(cakesCategoryId)
+                }
 
-        )
+                override fun onCancelled(error: DatabaseError) {
+                    // Handle onCancelled event
+                }
+            })
+    }
 
-        val subCategory = listOf(
-            RecipesCategory( "1", "Chocolate", "Milk Chocolate", "cake with milk and chocolate", "https://img.taste.com.au/-l6L5bYJ/w720-h480-cfill-q80/taste/2016/11/homemade-chocolate-cake-85524-1.jpeg", listOf("Milk","Chocolate"), "bake everithing"),
-            RecipesCategory( "1", "Chocolate", "Milk Chocolate", "cake with milk and chocolate", "https://img.taste.com.au/-l6L5bYJ/w720-h480-cfill-q80/taste/2016/11/homemade-chocolate-cake-85524-1.jpeg", listOf("Milk","Chocolate"), "bake everithing")
-        )
+    private fun showSubCategories(nameCategory: String){
+        FirebaseDatabase.getInstance().getReference("RecipesCategories/$nameCategory/recipes")
+            .addValueEventListener(object : ValueEventListener{
+                override fun onDataChange(snapshot: DataSnapshot) {
+                    val recipeList = arrayListOf<Recipes>()
+                    for(recipe in snapshot.children){
+                        val currentRecipe = recipe.getValue(Recipes::class.java)
+                        currentRecipe?.let{
+                            recipeList.add(it)
+                        }
+                    }
+                    subAdapter.differ.submitList(recipeList)
+                }
 
-        mainCategoryAdapter.setData(mainCategory)
-        subCategoryAdapter.setData(subCategory)
+                override fun onCancelled(error: DatabaseError) {
+                    TODO("Not yet implemented")
+                }
+            })
     }
 }
-

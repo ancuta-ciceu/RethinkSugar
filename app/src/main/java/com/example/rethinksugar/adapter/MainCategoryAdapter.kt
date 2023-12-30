@@ -2,25 +2,34 @@ package com.example.rethinksugar.adapter
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.recyclerview.widget.AsyncListDiffer
+import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
 import com.example.rethinksugar.databinding.ItemMainCategoryBinding
-import com.example.rethinksugar.domain.Recipes
+import com.example.rethinksugar.firebase.RecipesCategory
+
 
 class MainCategoryAdapter : RecyclerView.Adapter<MainCategoryAdapter.RecipeViewHolder>() {
-    var recipesList = listOf<Recipes>()
 
-    class RecipeViewHolder(private val binding: ItemMainCategoryBinding) : RecyclerView.ViewHolder(binding.root) {
+    class RecipeViewHolder(val binding: ItemMainCategoryBinding) : RecyclerView.ViewHolder(binding.root)
+    val diffUtil = object : DiffUtil.ItemCallback<RecipesCategory>(){
+        override fun areItemsTheSame(
+            oldItem: RecipesCategory,
+            newItem: RecipesCategory
+        ): Boolean {
+            return oldItem.idCategory == newItem.idCategory
+        }
 
-        fun bind(recipe: Recipes) {
-            binding.recipe = recipe
-            binding.executePendingBindings()
+        override fun areContentsTheSame(
+            oldItem: RecipesCategory,
+            newItem: RecipesCategory
+        ): Boolean {
+            return oldItem==newItem
         }
     }
 
-    fun setData(data: List<Recipes>) {
-        recipesList = data
-        notifyDataSetChanged()
-    }
+    val differ = AsyncListDiffer(this, diffUtil)
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecipeViewHolder {
         val binding = ItemMainCategoryBinding.inflate(LayoutInflater.from(parent.context), parent, false)
@@ -28,11 +37,14 @@ class MainCategoryAdapter : RecyclerView.Adapter<MainCategoryAdapter.RecipeViewH
     }
 
     override fun getItemCount(): Int {
-        return recipesList.size
+        return differ.currentList.size
     }
 
     override fun onBindViewHolder(holder: RecipeViewHolder, position: Int) {
-        val recipe = recipesList[position]
-        holder.bind(recipe)
+        val recipeData = differ.currentList[position]
+        holder.binding.apply {
+            Glide.with(holder.itemView).load(recipeData.imageCategory).into(imgCategory)
+            categoryName.text = recipeData.nameCategory
+        }
     }
 }

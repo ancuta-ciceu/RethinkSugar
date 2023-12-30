@@ -77,7 +77,7 @@
                 tools:ignore="MissingConstraints" />
 
             <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/subcategories"
+                android:id="@+id/sub_categories"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="10dp"

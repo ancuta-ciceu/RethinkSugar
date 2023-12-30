@@ -1,21 +1,22 @@
 package com.example.rethinksugar.firebase
+
 import com.google.firebase.database.PropertyName
+
+//ceea ce folosim pentru clasificare retete
 data class RecipesCategory(
-    @PropertyName("id")
-    val id: String,
-    @PropertyName("name")
-    val name: String,
-    @PropertyName("flavor")
-    val flavor: String,
-    @PropertyName("description")
-    val description: String,
-    @PropertyName("imageUrl")
-    val imageUrl: String,
-    @PropertyName("ingredients")
-    val ingredients: List<String>,
-    @PropertyName("recipe")
-    val recipe: String
+    @PropertyName("idCategory")
+    val idCategory: String,
+
+    @PropertyName("nameCategory")
+    val nameCategory: String,
+
+    @PropertyName("recipes")
+    val repices: List<Recipes>,
+
+    @PropertyName("imageCategory")
+    val imageCategory: String
 ){
-    constructor() : this( "","","","","", emptyList(),"")
+    constructor() : this( "","", emptyList(), "")
+
 }
 
