@@ -16,11 +16,11 @@ class HomeViewModel : ViewModel() {
     private val _subCategories = MutableLiveData<List<Recipes>>()
     val subCategories: LiveData<List<Recipes>> get() = _subCategories
 
-    private val firebaseStore = FirebaseStore()
+    private val firebaseDatabase = FirebaseStore()
 
     fun fetchData() {
         viewModelScope.launch {
-            firebaseStore.getAll().collect { recipesList ->
+            firebaseDatabase.getAll().collect { recipesList ->
                 val mainCategories = recipesList.filter {
                 isActive/* filter main categories condition */ }
                 val subCategories = recipesList.filter {
@@ -31,4 +31,5 @@ class HomeViewModel : ViewModel() {
             }
         }
     }
+
 }
