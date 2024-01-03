@@ -9,7 +9,7 @@ import com.bumptech.glide.Glide
 import com.example.rethinksugar.databinding.ItemSubCategoryBinding
 import com.example.rethinksugar.firebase.Recipes
 
-class SubCategoryAdapter : RecyclerView.Adapter<SubCategoryAdapter.RecipeViewHolder>() {
+class SubCategoryAdapter(private val onItemClick : (Recipes) -> Unit) : RecyclerView.Adapter<SubCategoryAdapter.RecipeViewHolder>() {
 
     class RecipeViewHolder(val binding: ItemSubCategoryBinding) : RecyclerView.ViewHolder(binding.root)
     val diffUtil = object : DiffUtil.ItemCallback<Recipes>(){
@@ -44,6 +44,10 @@ class SubCategoryAdapter : RecyclerView.Adapter<SubCategoryAdapter.RecipeViewHol
         holder.binding.apply {
             Glide.with(holder.itemView).load(recipeData.imageUrl).into(imgDessert)
             dessert.text = recipeData.name
+
+            root.setOnClickListener{
+                onItemClick.invoke(recipeData)
+            }
         }
     }
 }

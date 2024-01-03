@@ -70,16 +70,18 @@ dependencies {
     implementation("androidx.compose.material3:material3")
     implementation("androidx.room:room-common:2.6.1")
     implementation("androidx.room:room-ktx:2.6.1")
+    implementation(platform("androidx.compose:compose-bom:2023.03.00"))
     testImplementation("junit:junit:4.13.2")
 
     implementation("com.squareup.retrofit2:retrofit:2.9.0")
     implementation("com.squareup.retrofit2:converter-gson:2.9.0")
     implementation("com.google.code.gson:gson:2.8.9")
-    implementation ("com.squareup.picasso:picasso:2.71828")
+
 
 
     //glide
     implementation("com.github.bumptech.glide:glide:4.15.0")
+    androidTestImplementation(platform("androidx.compose:compose-bom:2023.03.00"))
     annotationProcessor("com.github.bumptech.glide:compiler:4.15.0")
 
     androidTestImplementation("androidx.test.ext:junit:1.1.5")

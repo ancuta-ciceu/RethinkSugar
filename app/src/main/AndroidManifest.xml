@@ -13,8 +13,16 @@
         android:theme="@style/Theme.RethinkSugar"
         tools:targetApi="31">
         <activity
+            android:name=".RecipeActivity"
+            android:exported="false" />
+        <activity
+            android:name=".RecipesActivity"
+            android:exported="false"
+            android:label="@string/title_activity_recipes"
+            android:theme="@style/Theme.RethinkSugar" />
+        <activity
             android:name=".auth.SplashActivity"
-            android:exported="true" >
+            android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -29,8 +37,7 @@
             android:exported="false" />
         <activity
             android:name=".auth.LoginActivity"
-            android:exported="false"/>
-
+            android:exported="false" />
         <activity
             android:name=".HomeActivity"
             android:exported="false" />

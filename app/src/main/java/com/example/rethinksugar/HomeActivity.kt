@@ -1,6 +1,8 @@
 package com.example.rethinksugar
 
+import android.content.Intent
 import android.os.Bundle
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.rethinksugar.adapter.MainCategoryAdapter
@@ -13,7 +15,7 @@ import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
 
-class HomeActivity : AppCompatActivity() { // Change the superclass to FragmentActivity
+class HomeActivity : AppCompatActivity() {
     private lateinit var binding: ActivityHomeBinding
     private lateinit var mainAdapter: MainCategoryAdapter
     private lateinit var subAdapter: SubCategoryAdapter
@@ -28,10 +30,16 @@ class HomeActivity : AppCompatActivity() { // Change the superclass to FragmentA
             LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
         binding.mainCategories.adapter = mainAdapter
 
-        subAdapter = SubCategoryAdapter()
+        subAdapter = SubCategoryAdapter{
+            val intent = Intent(this, RecipeActivity::class.java)
+            //intent.putExtra("recipe_id", selectedRecipe.id)
+            startActivity(intent)
+        }
         binding.subCategories.layoutManager =
             LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
         binding.subCategories.adapter = subAdapter
+
+
 
         showAllCategories()
     }
@@ -53,7 +61,7 @@ class HomeActivity : AppCompatActivity() { // Change the superclass to FragmentA
                 }
 
                 override fun onCancelled(error: DatabaseError) {
-                    // Handle onCancelled event
+                    showError("Sorry, we encountered a problem connecting to the server")
                 }
             })
     }
@@ -73,8 +81,13 @@ class HomeActivity : AppCompatActivity() { // Change the superclass to FragmentA
                 }
 
                 override fun onCancelled(error: DatabaseError) {
-                    TODO("Not yet implemented")
+                    showError("Sorry, we encountered a problem connecting to the server")
                 }
             })
+    }
+
+
+    private fun showError(errorMessage: String) {
+        Toast.makeText(this, errorMessage, Toast.LENGTH_SHORT).show()
     }
 }
