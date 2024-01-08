@@ -12,7 +12,7 @@ import com.example.rethinksugar.firebase.Recipes
 class SubCategoryAdapter(private val onItemClick : (Recipes) -> Unit) : RecyclerView.Adapter<SubCategoryAdapter.RecipeViewHolder>() {
 
     class RecipeViewHolder(val binding: ItemSubCategoryBinding) : RecyclerView.ViewHolder(binding.root)
-    val diffUtil = object : DiffUtil.ItemCallback<Recipes>(){
+    private val diffUtil = object : DiffUtil.ItemCallback<Recipes>(){
         override fun areItemsTheSame(
             oldItem: Recipes,
             newItem: Recipes

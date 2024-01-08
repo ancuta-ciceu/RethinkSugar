@@ -2,6 +2,7 @@ package com.example.rethinksugar
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -19,20 +20,27 @@ class HomeActivity : AppCompatActivity() {
     private lateinit var binding: ActivityHomeBinding
     private lateinit var mainAdapter: MainCategoryAdapter
     private lateinit var subAdapter: SubCategoryAdapter
+    private  var category: String = ""
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityHomeBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        mainAdapter = MainCategoryAdapter()
+        mainAdapter = MainCategoryAdapter{selectedCategory ->
+            showSubCategories(selectedCategory)
+            category = selectedCategory
+
+        }
         binding.mainCategories.layoutManager =
             LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
         binding.mainCategories.adapter = mainAdapter
 
-        subAdapter = SubCategoryAdapter{
+        subAdapter = SubCategoryAdapter{selectedRecipe ->
             val intent = Intent(this, RecipeActivity::class.java)
-            //intent.putExtra("recipe_id", selectedRecipe.id)
+            intent.putExtra("category_name", category)
+            intent.putExtra("recipe_name", selectedRecipe.name)
+            Log.d("HomeActivity", "Recipe name:  ${selectedRecipe.name}")
             startActivity(intent)
         }
         binding.subCategories.layoutManager =
@@ -56,12 +64,14 @@ class HomeActivity : AppCompatActivity() {
                         }
                     }
                     mainAdapter.differ.submitList(categoryList)
-                    val cakesCategoryId = "Cakes"
-                    showSubCategories(cakesCategoryId)
+                    if(categoryList.isNotEmpty()){
+                        showSubCategories(categoryList[0].nameCategory)
+                    }
+
                 }
 
                 override fun onCancelled(error: DatabaseError) {
-                    showError("Sorry, we encountered a problem connecting to the server")
+                    showError("Sorry, we encountered a problem connecting to the server, ${error}")
                 }
             })
     }
