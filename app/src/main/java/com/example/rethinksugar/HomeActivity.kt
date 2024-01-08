@@ -20,23 +20,24 @@ class HomeActivity : AppCompatActivity() {
     private lateinit var binding: ActivityHomeBinding
     private lateinit var mainAdapter: MainCategoryAdapter
     private lateinit var subAdapter: SubCategoryAdapter
-    private  var category: String = ""
+    private var category: String = ""
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityHomeBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        mainAdapter = MainCategoryAdapter{selectedCategory ->
+        mainAdapter = MainCategoryAdapter { selectedCategory ->
             showSubCategories(selectedCategory)
-            category = selectedCategory
+
+            category = selectedCategory.nameCategory
 
         }
         binding.mainCategories.layoutManager =
             LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
         binding.mainCategories.adapter = mainAdapter
 
-        subAdapter = SubCategoryAdapter{selectedRecipe ->
+        subAdapter = SubCategoryAdapter { selectedRecipe ->
             val intent = Intent(this, RecipeActivity::class.java)
             intent.putExtra("category_name", category)
             intent.putExtra("recipe_name", selectedRecipe.name)
@@ -46,8 +47,6 @@ class HomeActivity : AppCompatActivity() {
         binding.subCategories.layoutManager =
             LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
         binding.subCategories.adapter = subAdapter
-
-
 
         showAllCategories()
     }
@@ -63,11 +62,9 @@ class HomeActivity : AppCompatActivity() {
                             categoryList.add(it)
                         }
                     }
-                    mainAdapter.differ.submitList(categoryList)
-                    if(categoryList.isNotEmpty()){
-                        showSubCategories(categoryList[0].nameCategory)
-                    }
 
+
+                    mainAdapter.differ.submitList(categoryList)
                 }
 
                 override fun onCancelled(error: DatabaseError) {
@@ -76,26 +73,35 @@ class HomeActivity : AppCompatActivity() {
             })
     }
 
-    private fun showSubCategories(nameCategory: String){
+    private fun showSubCategories(selectedCategory: RecipesCategory) {
+        val nameCategory = selectedCategory.nameCategory
+        Log.d("HomeActivity", "Fetching recipes for category: $nameCategory")
+
         FirebaseDatabase.getInstance().getReference("RecipesCategories/$nameCategory/recipes")
-            .addValueEventListener(object : ValueEventListener{
+            .addListenerForSingleValueEvent(object : ValueEventListener {
                 override fun onDataChange(snapshot: DataSnapshot) {
-                    val recipeList = arrayListOf<Recipes>()
-                    for(recipe in snapshot.children){
-                        val currentRecipe = recipe.getValue(Recipes::class.java)
-                        currentRecipe?.let{
+                    Log.d("HomeActivity", "Snapshot for $nameCategory: $snapshot")
+
+                    val recipeList = mutableListOf<Recipes>()
+                    for (recipeSnapshot in snapshot.children) {
+                        val currentRecipe = recipeSnapshot.getValue(Recipes::class.java)
+                        currentRecipe?.let {
                             recipeList.add(it)
                         }
                     }
+                    Log.d("HomeActivity", "Fetched recipes for category $nameCategory: $recipeList")
+
                     subAdapter.differ.submitList(recipeList)
+                    if (recipeList.isEmpty()) {
+                        Log.d("HomeActivity", "No recipes found for category $nameCategory")
+                    }
                 }
 
                 override fun onCancelled(error: DatabaseError) {
-                    showError("Sorry, we encountered a problem connecting to the server")
+                    Log.e("HomeActivity", "Error fetching recipes: ${error.message}")
                 }
             })
     }
-
 
     private fun showError(errorMessage: String) {
         Toast.makeText(this, errorMessage, Toast.LENGTH_SHORT).show()

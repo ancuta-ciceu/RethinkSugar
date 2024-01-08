@@ -34,21 +34,34 @@ class RecipeActivity : AppCompatActivity() {
             startActivity(intent)
         }
 
+        binding.alternative.setOnClickListener {
+            val intent = Intent(this, AlternativeActivity::class.java)
+            startActivity(intent)
+        }
+
 
         database = FirebaseDatabase.getInstance().getReference("RecipesCategories").child(category).child("recipes")
-            .child("Chocolate_Cake")
 
-        database.addListenerForSingleValueEvent(object : ValueEventListener {
+        database.orderByChild("name").equalTo(recipeName).addListenerForSingleValueEvent(object : ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
                 Log.d("RecipeActivity", "snapshot: $snapshot")
 
-                val imageUrl = snapshot.child("imageUrl").getValue(String::class.java)
-                Glide.with(this@RecipeActivity).load(imageUrl).into(binding.imageView)
+                if(snapshot.exists()){
+                    val recipeData = snapshot.children.first()
+                    val imageUrl = recipeData?.child("imageUrl")?.getValue(String::class.java)
+                    Glide.with(this@RecipeActivity).load(imageUrl).into(binding.imageView)
 
-                binding.recipeName.text = snapshot.child("name").getValue(String::class.java)
-                binding.preparationTime.text = snapshot.child("time").getValue(String::class.java)
-                binding.ingredients.text = snapshot.child("ingredients").getValue(String::class.java)
-                binding.steps.text = snapshot.child("recipe").getValue(String::class.java)
+                    binding.recipeName.text = recipeData?.child("name")?.getValue(String::class.java)
+                    binding.preparationTime.text = recipeData?.child("time")?.getValue(String::class.java)
+                    binding.ingredients.text = recipeData?.child("ingredients")?.getValue(String::class.java)
+                    binding.steps.text = recipeData?.child("recipe")?.getValue(String::class.java)
+                }else {
+                    // If the snapshot doesn't exist, handle the case where the recipe was not found
+                    Log.d("RecipeActivity", "Recipe not found: $recipeName")
+                    Toast.makeText(this@RecipeActivity, "Recipe not found", Toast.LENGTH_SHORT).show()
+                    // You might want to navigate back to the HomeActivity or handle this case accordingly
+                }
+
             }
 
             override fun onCancelled(error: DatabaseError) {

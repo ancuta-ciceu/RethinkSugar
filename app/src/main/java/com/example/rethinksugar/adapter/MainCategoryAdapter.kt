@@ -1,5 +1,6 @@
 package com.example.rethinksugar.adapter
 
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.AsyncListDiffer
@@ -10,7 +11,7 @@ import com.example.rethinksugar.databinding.ItemMainCategoryBinding
 import com.example.rethinksugar.firebase.RecipesCategory
 
 
-class MainCategoryAdapter (private val onMainCategoryClick : (String) -> Unit): RecyclerView.Adapter<MainCategoryAdapter.RecipeViewHolder>() {
+class MainCategoryAdapter (private val onMainCategoryClick : (RecipesCategory) -> Unit): RecyclerView.Adapter<MainCategoryAdapter.RecipeViewHolder>() {
 
     class RecipeViewHolder(val binding: ItemMainCategoryBinding) : RecyclerView.ViewHolder(binding.root)
     val diffUtil = object : DiffUtil.ItemCallback<RecipesCategory>(){
@@ -46,7 +47,9 @@ class MainCategoryAdapter (private val onMainCategoryClick : (String) -> Unit): 
             Glide.with(holder.itemView).load(recipeData.imageCategory).into(imgCategory)
             categoryName.text = recipeData.nameCategory
             root.setOnClickListener{
-                onMainCategoryClick.invoke(recipeData.nameCategory)
+                onMainCategoryClick.invoke(recipeData)
+                Log.d("HomeAct", "S-a apasat pe categoria: $recipeData")
+
             }
         }
     }
