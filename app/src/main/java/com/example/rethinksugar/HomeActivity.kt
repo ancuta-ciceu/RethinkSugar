@@ -1,6 +1,9 @@
 package com.example.rethinksugar
 
+import android.content.Intent
 import android.os.Bundle
+import android.util.Log
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.rethinksugar.adapter.MainCategoryAdapter
@@ -13,22 +16,34 @@ import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
 
-class HomeActivity : AppCompatActivity() { // Change the superclass to FragmentActivity
+class HomeActivity : AppCompatActivity() {
     private lateinit var binding: ActivityHomeBinding
     private lateinit var mainAdapter: MainCategoryAdapter
     private lateinit var subAdapter: SubCategoryAdapter
+    private var category: String = ""
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityHomeBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        mainAdapter = MainCategoryAdapter()
+        mainAdapter = MainCategoryAdapter { selectedCategory ->
+            showSubCategories(selectedCategory)
+
+            category = selectedCategory.nameCategory
+
+        }
         binding.mainCategories.layoutManager =
             LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
         binding.mainCategories.adapter = mainAdapter
 
-        subAdapter = SubCategoryAdapter()
+        subAdapter = SubCategoryAdapter { selectedRecipe ->
+            val intent = Intent(this, RecipeActivity::class.java)
+            intent.putExtra("category_name", category)
+            intent.putExtra("recipe_name", selectedRecipe.name)
+            Log.d("HomeActivity", "Recipe name:  ${selectedRecipe.name}")
+            startActivity(intent)
+        }
         binding.subCategories.layoutManager =
             LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
         binding.subCategories.adapter = subAdapter
@@ -47,34 +62,48 @@ class HomeActivity : AppCompatActivity() { // Change the superclass to FragmentA
                             categoryList.add(it)
                         }
                     }
+
+
                     mainAdapter.differ.submitList(categoryList)
-                    val cakesCategoryId = "Cakes"
-                    showSubCategories(cakesCategoryId)
                 }
 
                 override fun onCancelled(error: DatabaseError) {
-                    // Handle onCancelled event
+                    showError("Sorry, we encountered a problem connecting to the server, ${error}")
                 }
             })
     }
 
-    private fun showSubCategories(nameCategory: String){
+    private fun showSubCategories(selectedCategory: RecipesCategory) {
+        val nameCategory = selectedCategory.nameCategory
+        Log.d("HomeActivity", "Fetching recipes for category: $nameCategory")
+
         FirebaseDatabase.getInstance().getReference("RecipesCategories/$nameCategory/recipes")
-            .addValueEventListener(object : ValueEventListener{
+            .addListenerForSingleValueEvent(object : ValueEventListener {
                 override fun onDataChange(snapshot: DataSnapshot) {
-                    val recipeList = arrayListOf<Recipes>()
-                    for(recipe in snapshot.children){
-                        val currentRecipe = recipe.getValue(Recipes::class.java)
-                        currentRecipe?.let{
+                    Log.d("HomeActivity", "Snapshot for $nameCategory: $snapshot")
+
+                    val recipeList = mutableListOf<Recipes>()
+                    for (recipeSnapshot in snapshot.children) {
+                        val currentRecipe = recipeSnapshot.getValue(Recipes::class.java)
+                        currentRecipe?.let {
                             recipeList.add(it)
                         }
                     }
+                    Log.d("HomeActivity", "Fetched recipes for category $nameCategory: $recipeList")
+
                     subAdapter.differ.submitList(recipeList)
+                    if (recipeList.isEmpty()) {
+                        Log.d("HomeActivity", "No recipes found for category $nameCategory")
+                    }
                 }
 
                 override fun onCancelled(error: DatabaseError) {
-                    TODO("Not yet implemented")
+                    Log.e("HomeActivity", "Error fetching recipes: ${error.message}")
                 }
             })
+    }
+
+    private fun showError(errorMessage: String) {
+        Toast.makeText(this, errorMessage, Toast.LENGTH_SHORT).show()
     }
 }

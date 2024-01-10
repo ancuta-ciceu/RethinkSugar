@@ -6,17 +6,15 @@ data class Recipes(
     val id: String,
     @PropertyName("name")
     val name: String,
-    @PropertyName("flavor")
-    val flavor: String,
-    @PropertyName("description")
-    val description: String,
+    @PropertyName("time")
+    val time: String,
     @PropertyName("imageUrl")
     val imageUrl: String,
     @PropertyName("ingredients")
-    val ingredients: List<String>,
+    val ingredients: String,
     @PropertyName("recipe")
     val recipe: String
 ){
-    constructor() : this( "","","","","", emptyList(),"")
+    constructor() : this( "","","", "", "","")
 }
 

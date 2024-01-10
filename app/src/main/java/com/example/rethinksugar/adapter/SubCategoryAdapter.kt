@@ -9,10 +9,10 @@ import com.bumptech.glide.Glide
 import com.example.rethinksugar.databinding.ItemSubCategoryBinding
 import com.example.rethinksugar.firebase.Recipes
 
-class SubCategoryAdapter : RecyclerView.Adapter<SubCategoryAdapter.RecipeViewHolder>() {
+class SubCategoryAdapter(private val onItemClick : (Recipes) -> Unit) : RecyclerView.Adapter<SubCategoryAdapter.RecipeViewHolder>() {
 
     class RecipeViewHolder(val binding: ItemSubCategoryBinding) : RecyclerView.ViewHolder(binding.root)
-    val diffUtil = object : DiffUtil.ItemCallback<Recipes>(){
+    private val diffUtil = object : DiffUtil.ItemCallback<Recipes>(){
         override fun areItemsTheSame(
             oldItem: Recipes,
             newItem: Recipes
@@ -42,8 +42,12 @@ class SubCategoryAdapter : RecyclerView.Adapter<SubCategoryAdapter.RecipeViewHol
     override fun onBindViewHolder(holder: RecipeViewHolder, position: Int) {
         val recipeData = differ.currentList[position]
         holder.binding.apply {
-            Glide.with(holder.itemView).load(recipeData.recipe).into(imgDessert)
+            Glide.with(holder.itemView).load(recipeData.imageUrl).into(imgDessert)
             dessert.text = recipeData.name
+
+            root.setOnClickListener{
+                onItemClick.invoke(recipeData)
+            }
         }
     }
 }
