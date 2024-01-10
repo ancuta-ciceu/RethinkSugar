@@ -144,7 +144,7 @@
                     android:id="@+id/alternative"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:background="@color/darkpink"
+                    android:background="@color/darkblue"
                     android:textColor="@color/black"
                     android:text="See a healthier alternative"
                     android:padding="5dp"

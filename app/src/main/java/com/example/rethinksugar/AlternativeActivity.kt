@@ -1,9 +1,12 @@
 package com.example.rethinksugar
 
+import android.content.Context
 import android.content.Intent
+import android.content.SharedPreferences
 import android.os.Bundle
 import android.util.Log
 import android.widget.Toast
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import com.bumptech.glide.Glide
 import com.example.rethinksugar.databinding.ActivityAlternativeBinding
@@ -18,6 +21,8 @@ import kotlin.random.Random
 class AlternativeActivity : AppCompatActivity() {
     private lateinit var binding: ActivityAlternativeBinding
     private lateinit var database : DatabaseReference
+    private var counter = 0
+    private lateinit var sharedPreferences : SharedPreferences
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityAlternativeBinding.inflate(layoutInflater)
@@ -27,6 +32,9 @@ class AlternativeActivity : AppCompatActivity() {
             val intent = Intent(this, HomeActivity::class.java)
             startActivity(intent)
         }
+
+        sharedPreferences = getSharedPreferences("ChooseHealthy", Context.MODE_PRIVATE)
+        counter = sharedPreferences.getInt("counter", 0)
 
         database = FirebaseDatabase.getInstance().getReference("RecipesCategories").child("Healthy_Desserts").child("recipes")
 
@@ -45,17 +53,9 @@ class AlternativeActivity : AppCompatActivity() {
                     binding.ingredients.text = randomRecipe.ingredients
                     binding.steps.text = randomRecipe.recipe
                 }else {
-                    // Handle the case where there are no recipes in the category
                     Toast.makeText(this@AlternativeActivity, "No recipes found in the category", Toast.LENGTH_SHORT).show()
                 }
-//                val imageUrl = recipeData?.child("imageUrl")?.getValue(String::class.java)
-//
-//                Glide.with(this@AlternativeActivity).load(imageUrl).into(binding.imageView)
-//
-//                binding.recipeName.text = recipeData?.child("name")?.getValue(String::class.java)
-//                binding.preparationTime.text = recipeData?.child("time")?.getValue(String::class.java)
-//                binding.ingredients.text = recipeData?.child("ingredients")?.getValue(String::class.java)
-//                binding.steps.text = recipeData?.child("recipe")?.getValue(String::class.java)
+
             }
 
 
@@ -65,5 +65,25 @@ class AlternativeActivity : AppCompatActivity() {
             }
 
         })
+
+        binding.counter.setOnClickListener {
+            counter++
+            showCounter()
+
+        }
+    }
+
+    private fun showCounter() {
+        val editor = sharedPreferences.edit()
+        editor.putInt("counter", counter)
+        editor.apply()
+        val builder = AlertDialog.Builder(this)
+        builder.setTitle("Congratulations!")
+        builder.setMessage("Times you chose the healthiest option: $counter")
+        builder.setPositiveButton("OK"){
+            dialog, which -> dialog.dismiss()
+        }
+        val dialog: AlertDialog = builder.create()
+        dialog.show()
     }
 }
