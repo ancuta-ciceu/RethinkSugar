@@ -1,4 +1,4 @@
-package com.example.rethinksugar
+package com.example.rethinksugar.ui
 
 import android.content.Intent
 import android.os.Bundle
@@ -28,7 +28,7 @@ class HomeActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         mainAdapter = MainCategoryAdapter { selectedCategory ->
-            showSubCategories(selectedCategory)
+            showRecipes(selectedCategory)
 
             category = selectedCategory.nameCategory
 
@@ -73,7 +73,7 @@ class HomeActivity : AppCompatActivity() {
             })
     }
 
-    private fun showSubCategories(selectedCategory: RecipesCategory) {
+    private fun showRecipes(selectedCategory: RecipesCategory) {
         val nameCategory = selectedCategory.nameCategory
         Log.d("HomeActivity", "Fetching recipes for category: $nameCategory")
 

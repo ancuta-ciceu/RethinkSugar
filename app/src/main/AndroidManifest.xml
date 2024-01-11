@@ -10,15 +10,14 @@
         android:fullBackupContent="@xml/backup_rules"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
-        android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.RethinkSugar"
         tools:targetApi="31">
         <activity
-            android:name=".AlternativeActivity"
+            android:name=".ui.AlternativeActivity"
             android:exported="false" />
         <activity
-            android:name=".RecipeActivity"
+            android:name=".ui.RecipeActivity"
             android:exported="false" />
         <activity
             android:name=".auth.SplashActivity"
@@ -39,7 +38,7 @@
             android:name=".auth.LoginActivity"
             android:exported="false" />
         <activity
-            android:name=".HomeActivity"
+            android:name=".ui.HomeActivity"
             android:exported="false" />
     </application>
 
