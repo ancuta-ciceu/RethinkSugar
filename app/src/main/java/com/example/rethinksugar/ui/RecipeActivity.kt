@@ -1,4 +1,4 @@
-package com.example.rethinksugar
+package com.example.rethinksugar.ui
 
 import android.content.Intent
 import android.os.Bundle
@@ -25,9 +25,7 @@ class RecipeActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         category = intent.getStringExtra("category_name") ?: ""
-        Log.d("RecipeActivity", "Categoria selectata: $category")
         recipeName = intent.getStringExtra("recipe_name") ?: ""
-        Log.d("RecipeActivity", "Reteta selectata: $recipeName")
 
         binding.ToolbarBackBtn.setOnClickListener {
             val intent = Intent(this, HomeActivity::class.java)
@@ -56,10 +54,8 @@ class RecipeActivity : AppCompatActivity() {
                     binding.ingredients.text = recipeData?.child("ingredients")?.getValue(String::class.java)
                     binding.steps.text = recipeData?.child("recipe")?.getValue(String::class.java)
                 }else {
-                    // If the snapshot doesn't exist, handle the case where the recipe was not found
                     Log.d("RecipeActivity", "Recipe not found: $recipeName")
                     Toast.makeText(this@RecipeActivity, "Recipe not found", Toast.LENGTH_SHORT).show()
-                    // You might want to navigate back to the HomeActivity or handle this case accordingly
                 }
 
             }

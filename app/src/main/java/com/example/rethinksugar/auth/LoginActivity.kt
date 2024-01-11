@@ -4,8 +4,8 @@ import android.content.Intent
 import android.os.Bundle
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import com.example.rethinksugar.HomeActivity
 import com.example.rethinksugar.databinding.ActivityLogin2Binding
+import com.example.rethinksugar.ui.HomeActivity
 import com.google.firebase.auth.FirebaseAuth
 
 class LoginActivity : AppCompatActivity(){

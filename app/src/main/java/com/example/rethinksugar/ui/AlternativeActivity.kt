@@ -1,4 +1,4 @@
-package com.example.rethinksugar
+package com.example.rethinksugar.ui
 
 import android.content.Context
 import android.content.Intent

@@ -1,11 +1,11 @@
 package com.example.rethinksugar.auth
 
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import com.example.rethinksugar.HomeActivity
+import androidx.appcompat.app.AppCompatActivity
 import com.example.rethinksugar.R
 import com.example.rethinksugar.databinding.ActivityWelcomeBinding
+import com.example.rethinksugar.ui.HomeActivity
 
 class WelcomeActivity : AppCompatActivity() {
     private lateinit var binding:ActivityWelcomeBinding
