@@ -8,9 +8,11 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.rethinksugar.adapter.MainCategoryAdapter
 import com.example.rethinksugar.adapter.SubCategoryAdapter
+import com.example.rethinksugar.auth.LoginActivity
 import com.example.rethinksugar.databinding.ActivityHomeBinding
 import com.example.rethinksugar.firebase.Recipes
 import com.example.rethinksugar.firebase.RecipesCategory
+import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
@@ -21,11 +23,21 @@ class HomeActivity : AppCompatActivity() {
     private lateinit var mainAdapter: MainCategoryAdapter
     private lateinit var subAdapter: SubCategoryAdapter
     private var category: String = ""
+    private lateinit var firebaseAuth: FirebaseAuth
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityHomeBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
+
+        firebaseAuth = FirebaseAuth.getInstance()
+        binding.logoutBtn.setOnClickListener{
+            firebaseAuth.signOut()
+            val intent = Intent(this, LoginActivity::class.java)
+            startActivity(intent)
+        }
+
 
         mainAdapter = MainCategoryAdapter { selectedCategory ->
             showRecipes(selectedCategory)
